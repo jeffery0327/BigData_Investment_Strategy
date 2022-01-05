@@ -21,3 +21,5 @@
 貝氏定理
 
 ---
+
+    ![貝氏定理是關於隨機事件A和B的條件機率的一則定理](https://wikimedia.org/api/rest_v1/media/math/render/svg/e08d4ab0386c0ebb7d87f398cd38f911440fe3da)
