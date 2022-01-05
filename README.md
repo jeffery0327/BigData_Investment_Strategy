@@ -38,6 +38,12 @@ https://brohrer.mcknote.com/zh-Hant/how_machine_learning_works/how_rnns_lstm_wor
 
 # 專題內容
 
-### 預定主題
+### 主題: 武漢肺炎(2020/12~now)對股票的影響
 
-武漢肺炎(2020/12~now)對股票的影響
+### RNN 實作
+
+1.
+
+2.
+
+3.
