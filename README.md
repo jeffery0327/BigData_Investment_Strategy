@@ -40,6 +40,12 @@
 
 ### 主題: 武漢肺炎(2020/12~now)對股票的影響
 
+### 資料獲取
+https://query1.finance.yahoo.com/v8/finance/chart/1598.TW?period1=0&period2=1612417257&interval=1d&events=history&=hP2rOschxO0
+
+1598.TW 為 股票號碼.國家
+period1 = 開始時間 ( 1970年 + 0秒 )
+period2 = 結束時間 ( 1970年 + 1612417257秒 )
 ### RNN 實作
 
 [透過 LSTM 預測股票](https://wenwender.wordpress.com/2019/10/18/%E5%AF%A6%E4%BD%9C%E9%80%8F%E9%81%8Elstm%E9%A0%90%E6%B8%AC%E8%82%A1%E7%A5%A8/)
