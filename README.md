@@ -12,20 +12,26 @@
 
 # 名詞解釋
 
-金融時間序列
----
+## 金融時間序列
 
-    時間序列是用時間排序的一組隨機變量，國內生產毛額（GDP）、消費者物價指數（CPI）、加權股價指數、利率、匯率等等都是時間序列。
+時間序列是用時間排序的一組隨機變量，國內生產毛額（GDP）、消費者物價指數（CPI）、加權股價指數、利率、匯率等等都是時間序列。
 
-貝氏定理
----
+## 貝氏定理
 
 貝氏定理是關於隨機事件 A 和 B 的條件機率的一則定理
 ![](https://wikimedia.org/api/rest_v1/media/math/render/svg/e08d4ab0386c0ebb7d87f398cd38f911440fe3da)
 ![](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Bayes%27_Theorem_2D.svg/450px-Bayes%27_Theorem_2D.svg.png)
 
-
-高頻時間序列
----
+## 高頻時間序列
 
 高頻數據是指數據採樣的時間間隔較短，採樣頻率大於一般研究時採用的頻率。但高頻這個概念是相對而言的，例如，對於股票，可能要在一天內有多個數據才能稱為高頻數據，而對於巨集觀經濟數據，可能一周採樣一次就可以稱為高頻數據了。
+
+## RNN
+
+循環神經網路（Recurrent neural network：RNN）是神經網路的一種。單純的 RNN 因為無法處理隨著遞歸，權重指數級爆炸或梯度消失問題，難以捕捉長期時間關聯；而結合不同的 LSTM 可以很好解決這個問題。
+
+時間循環神經網路可以描述動態時間行為，因為和前饋神經網路（feedforward neural network）接受較特定結構的輸入不同，RNN 將狀態在自身網路中循環傳遞，因此可以接受更廣泛的時間序列結構輸入。手寫識別是最早成功利用 RNN 的研究結果。
+
+## 遞歸神經網路（RNN）和長短期記憶模型（LSTM）的運作原理
+
+https://brohrer.mcknote.com/zh-Hant/how_machine_learning_works/how_rnns_lstm_work.html
