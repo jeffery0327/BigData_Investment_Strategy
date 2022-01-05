@@ -19,8 +19,8 @@
 ## 貝氏定理
 
 貝氏定理是關於隨機事件 A 和 B 的條件機率的一則定理
-![](https://wikimedia.org/api/rest_v1/media/math/render/svg/e08d4ab0386c0ebb7d87f398cd38f911440fe3da)
-![](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Bayes%27_Theorem_2D.svg/450px-Bayes%27_Theorem_2D.svg.png)
+![貝氏定理公式](https://wikimedia.org/api/rest_v1/media/math/render/svg/e08d4ab0386c0ebb7d87f398cd38f911440fe3da)
+![關係圖](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Bayes%27_Theorem_2D.svg/450px-Bayes%27_Theorem_2D.svg.png)
 
 ## 高頻時間序列
 
@@ -34,7 +34,7 @@
 
 ## 遞歸神經網路（RNN）和長短期記憶模型（LSTM）的運作原理
 
-https://brohrer.mcknote.com/zh-Hant/how_machine_learning_works/how_rnns_lstm_work.html
+[RNN-LSTM 介紹](https://brohrer.mcknote.com/zh-Hant/how_machine_learning_works/how_rnns_lstm_work.html)
 
 # 專題內容
 
@@ -42,8 +42,10 @@ https://brohrer.mcknote.com/zh-Hant/how_machine_learning_works/how_rnns_lstm_wor
 
 ### RNN 實作
 
-1.
+[透過 LSTM 預測股票](https://wenwender.wordpress.com/2019/10/18/%E5%AF%A6%E4%BD%9C%E9%80%8F%E9%81%8Elstm%E9%A0%90%E6%B8%AC%E8%82%A1%E7%A5%A8/)
 
-2.
+1.切分 Test 集
 
-3.
+2.將數據做歸一化(Normalization)
+
+3.訓練
