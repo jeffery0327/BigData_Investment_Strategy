@@ -4,11 +4,29 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+def Cal_sec(start,end):
+    days=0
+    for i in range(start,end):
+        days+=Perpetual_calendar(i)
+    sec=days*86400
+    return sec
 
-def crawl_price(stock):
+def Perpetual_calendar(year):
+    if year%4!=0:
+        return 365
+    else:
+        if year%100!=0:
+            return 366
+        else:
+            if year%400!=0:
+                return 365
+            else:
+                return 366
 
-    sec_start="0"
-    sec_end="1640995200"
+def crawl_price(stock,year_start,year_end):
+
+    sec_start=Cal_sec(1970,year_start)
+    sec_end=Cal_sec(1970,year_end)
 
     #抓資料
     site = "https://query1.finance.yahoo.com/v8/finance/chart/"+stock+"?period1="+sec_start+"&period2="+sec_end+"&interval=1d&events=history&=hP2rOschxO0"
@@ -23,11 +41,23 @@ def crawl_price(stock):
 
     return df[['high']] 
 
-   
+def df_toCSV(df,dist):
+    df.to_csv(dist)
 
 
+
+
+
+
+
+
+
+start=1970
+end=2020
 stock="2330.TW"
-crawl_price(stock).to_csv("data/temp.csv")
+
+
+df_toCSV(crawl_price(stock,start,end),"data/temp.csv")
 
 
 
