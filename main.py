@@ -9,7 +9,7 @@ def Cal_sec(start,end):
     for i in range(start,end):
         days+=Perpetual_calendar(i)
     sec=days*86400
-    return sec
+    return str(sec)
 
 def Perpetual_calendar(year):
     if year%4!=0:
@@ -46,18 +46,14 @@ def df_toCSV(df,dist):
 
 
 
-
-
-
-
-
-
 start=1970
 end=2020
-stock="2330.TW"
+stock=["2330.TW","6547.TW","3081.TW","2610.TW","2618.TW","2609.TW","2615.TW","2603.TW"]
+datapath=["data/temp.csv","data/MVC.CSV","data/UBIP.CSV","data/CAL.CSV","data/EVAAIR.CSV","data/YMTC.CSV","data/WANHAI.CSV","data/EVA_Air.CSV"]
 
 
-df_toCSV(crawl_price(stock,start,end),"data/temp.csv")
+
+df_toCSV(crawl_price(stock[0],start,end),datapath[0])
 
 
 

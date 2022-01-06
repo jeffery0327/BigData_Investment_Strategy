@@ -24,4 +24,4 @@ def Perpetual_calendar(year):
 
 
 
-print(Cal_sec(1990,2022))
+print(Cal_sec(1970,2021))
