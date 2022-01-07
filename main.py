@@ -3,6 +3,7 @@ import json
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import time
 
 def Cal_sec(start,end):
     days=0
@@ -62,8 +63,9 @@ datapath=["data/temp.csv","data/MVC.CSV","data/UBIP.CSV","data/CAL.CSV","data/EV
 
 
 
-df_toCSV(crawl_price(stock[0],start,end),datapath[0])
-
+# df_toCSV(crawl_price(stock[0],start,end),datapath[0])
+df_toCSV(crawl_price("2330.TW",1970,2015),"data/temp_train.csv")
+df_toCSV(crawl_price("2330.TW",2015,2022),"data/temp_test.csv")
 
 
 
