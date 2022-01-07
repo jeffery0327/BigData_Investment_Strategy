@@ -6,7 +6,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import time
 
-
 def crawl_price(stock):
 
     sec_start="0"
@@ -21,15 +20,7 @@ def crawl_price(stock):
     data = json.loads(response.text)
 
     stamp = data['chart']['result'][0]['timestamp']
-    date=[]
-    
-    for i in range(0,len(stamp)):
-        time_stamp = stamp[i] # 設定timeStamp
-        struct_time = time.localtime(time_stamp) # 轉成時間元組
-        timeString = time.strftime("%Y-%m-%d %H:%M:%S", struct_time) # 轉成字串
-        date.append(timeString)
-
-
+    date = stamp_toDate(stamp)
 
 
     df = pd.DataFrame(data['chart']['result'][0]['indicators']['quote'][0], index=date)
@@ -38,8 +29,14 @@ def crawl_price(stock):
 
     return df[['high']] 
 
-   
-
+def stamp_toDate(stamp):
+    date=[]
+    for i in range(0,len(stamp)):
+        time_stamp = stamp[i] # 設定timeStamp
+        struct_time = time.localtime(time_stamp) # 轉成時間元組
+        timeString = time.strftime("%Y-%m-%d %H:%M:%S", struct_time) # 轉成字串
+        date.append(timeString)
+    return date
 
 stock="2330.TW"
 crawl_price(stock).to_csv("data/temp.csv")
