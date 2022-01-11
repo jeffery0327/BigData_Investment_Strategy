@@ -38,11 +38,12 @@ def crawl_price(stock,year_start,year_end):
     data = json.loads(response.text)
     stamp = data['chart']['result'][0]['timestamp']
     date = stamp_toDate(stamp)
-    df = pd.DataFrame(data['chart']['result'][0]['indicators']['quote'][0], index=date)
+    df = pd.DataFrame(data['chart']['result'][0]['indicators']['quote'][0])
+    df['date']=date
     # 日期 時間 收市價 低點 高點 成交量 開市價
     
 
-    return df[['high']] 
+    return df[['high','date']] 
 
 def df_toCSV(df,dist):
     df.to_csv(dist)
@@ -52,7 +53,7 @@ def stamp_toDate(stamp):
     for i in range(0,len(stamp)):
         time_stamp = stamp[i] # 設定timeStamp
         struct_time = time.localtime(time_stamp) # 轉成時間元組
-        timeString = time.strftime("%Y-%m-%d %H:%M:%S", struct_time) # 轉成字串
+        timeString = time.strftime("%Y-%m-%d", struct_time) # 轉成字串
         date.append(timeString)
     return date
 
@@ -64,7 +65,7 @@ datapath=["data/temp.csv","data/MVC.CSV","data/UBIP.CSV","data/CAL.CSV","data/EV
 
 
 # df_toCSV(crawl_price(stock[0],start,end),datapath[0])
-df_toCSV(crawl_price("2330.TW",1970,2015),"data/temp_train.csv")
+df_toCSV(crawl_price("2330.TW",2000,2015),"data/temp_train.csv")
 df_toCSV(crawl_price("2330.TW",2015,2022),"data/temp_test.csv")
 
 

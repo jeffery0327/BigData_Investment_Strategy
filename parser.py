@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import time
+from datetime import datetime
 
 def crawl_price(stock):
 
@@ -23,18 +24,20 @@ def crawl_price(stock):
     date = stamp_toDate(stamp)
 
 
-    df = pd.DataFrame(data['chart']['result'][0]['indicators']['quote'][0], index=date)
+    df = pd.DataFrame(data['chart']['result'][0]['indicators']['quote'][0])
     # 日期 時間 收市價 低點 高點 成交量 開市價
-    
+    df['date'] = date
 
-    return df[['high']] 
+    return df[['high','date'] ]
 
 def stamp_toDate(stamp):
     date=[]
     for i in range(0,len(stamp)):
         time_stamp = stamp[i] # 設定timeStamp
         struct_time = time.localtime(time_stamp) # 轉成時間元組
-        timeString = time.strftime("%Y-%m-%d %H:%M:%S", struct_time) # 轉成字串
+        
+        timeString = time.strftime("%Y-%m-%d", struct_time) # 轉成字串
+        
         date.append(timeString)
     return date
 
