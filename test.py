@@ -1,85 +1,79 @@
-# Import the libraries
-import numpy as np
-import matplotlib.pyplot as plt  # for 畫圖用
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
-# Import the training set
-dataset_train = pd.read_csv('data/temp_train.csv')  # 讀取訓練集
-training_set = dataset_train.iloc[:, 1:2].values  # 取「Open」欄位值
+data = pd.read_csv('data/temp.csv')
 
-# Feature Scaling
-from sklearn.preprocessing import MinMaxScaler
+# data = data[data.index>4300]
 
+test = data[data.index >= 4550]
+train = data[data.index < 4550]
+
+train_set = train['high']
+test_set = test['high']
+
+from sklearn.preprocessing import MinMaxScaler 
 sc = MinMaxScaler(feature_range = (0, 1))
-training_set_scaled = sc.fit_transform(training_set)
+#需將資料做reshape的動作，使其shape為(資料長度,1) 
+train_set= train_set.values.reshape(-1,1)
+training_set_scaled = sc.fit_transform(train_set)
 
-X_train = []   #預測點的前 60 天的資料
-y_train = []   #預測點
-for i in range(60, 1258):  # 1258 是訓練集總數
-    X_train.append(training_set_scaled[i-60:i, 0])
-    y_train.append(training_set_scaled[i, 0])
-X_train, y_train = np.array(X_train), np.array(y_train)  # 轉成numpy array的格
-
-X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
+print(training_set_scaled)
 
 
-# Import the Keras libraries and packages
+
+X_train = [] 
+y_train = []
+for i in range(10,len(train_set)):
+    X_train.append(training_set_scaled[i-10:i-1, 0]) 
+    y_train.append(training_set_scaled[i, 0]) 
+X_train, y_train = np.array(X_train), np.array(y_train) 
+X_train = np.reshape(X_train, 
+                         (X_train.shape[0], X_train.shape[1], 1))
+
+# print("i 天前")
+# print(X_train)
+# print("第 i 天")
+# print(y_train)
+
+import keras
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
-from keras.layers import Dropout
+from keras.layers import Dropout,BatchNormalization
 
-# Initialising the RNN
+keras.backend.clear_session()
 regressor = Sequential()
-
-# Adding the first LSTM layer and some Dropout regularisation
-regressor.add(LSTM(units = 50, return_sequences = True, input_shape = (X_train.shape[1], 1)))
-regressor.add(Dropout(0.2))
-
-# Adding a second LSTM layer and some Dropout regularisation
-regressor.add(LSTM(units = 50, return_sequences = True))
-regressor.add(Dropout(0.2))
-
-# Adding a third LSTM layer and some Dropout regularisation
-regressor.add(LSTM(units = 50, return_sequences = True))
-regressor.add(Dropout(0.2))
-
-# Adding a fourth LSTM layer and some Dropout regularisation
-regressor.add(LSTM(units = 50))
-regressor.add(Dropout(0.2))
-
-# Adding the output layer
+regressor.add(LSTM(units = 100, input_shape = (X_train.shape[1], 1)))
 regressor.add(Dense(units = 1))
-
-# Compiling
 regressor.compile(optimizer = 'adam', loss = 'mean_squared_error')
 
-# 進行訓練
-regressor.fit(X_train, y_train, epochs = 100, batch_size = 32)
+history = regressor.fit(X_train, y_train, epochs = 100, batch_size = 16)
+# plt.title('train_loss')
+# plt.ylabel('loss')
+# plt.xlabel('Epoch')
+# plt.plot( history.history["loss"])
 
-# AAA
-dataset_test = pd.read_csv('data/temp_test.csv')
-real_stock_price = dataset_test.iloc[:, 1:2].values
+# dataset_total = pd.concat((train['high'], test['high']), axis = 0)
+# inputs = dataset_total[len(dataset_total) - len(test) - 10:].values
 
-dataset_total = pd.concat((dataset_train['high'], dataset_test['high']), axis = 0)
-inputs = dataset_total[len(dataset_total) - len(dataset_test) - 60:].values
-inputs = inputs.reshape(-1,1)
-inputs = sc.transform(inputs) # Feature Scaling
 
+inputs = test_set.values.reshape(-1,1)
+inputs = sc.transform(inputs)
 X_test = []
-for i in range(60, 80):  # timesteps一樣60； 80 = 先前的60天資料+2017年的20天資料
-    X_test.append(inputs[i-60:i, 0])
+for i in range(10, len(inputs)):
+    X_test.append(inputs[i-10:i-1, 0])
 X_test = np.array(X_test)
-X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1))  # Reshape 成 3-dimension
-
+X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1))
 predicted_stock_price = regressor.predict(X_test)
-predicted_stock_price = sc.inverse_transform(predicted_stock_price)  # to get the original scale
+#使用sc的 inverse_transform將股價轉為歸一化前
+predicted_stock_price = sc.inverse_transform(predicted_stock_price)
 
-# Visualising the results
-# plt.plot(real_stock_price, color = 'red', label = 'Real Google Stock Price')  # 紅線表示真實股價
-plt.plot(predicted_stock_price, color = 'blue', label = 'Predicted Google Stock Price')  # 藍線表示預測股價
-plt.title('Google Stock Price Prediction')
+plt.plot(test['high'].values, color = 'black', label = 'Real 2330TW Stock Price')
+plt.plot(predicted_stock_price, color = 'green', label = 'Predicted 2330TW Stock Price')
+plt.title('TATA Stock Price Prediction')
 plt.xlabel('Time')
-plt.ylabel('Google Stock Price')
+plt.ylabel('Stock Price')
 plt.legend()
 plt.show()
+# plt.savefig('lstm_2330.png')

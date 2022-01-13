@@ -17,18 +17,21 @@ def crawl_price(stock):
     headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36'}
     response = req.get(site,headers=headers)
 
+
     #將資料整裡成 DataFrame
     data = json.loads(response.text)
 
     stamp = data['chart']['result'][0]['timestamp']
     date = stamp_toDate(stamp)
 
-
     df = pd.DataFrame(data['chart']['result'][0]['indicators']['quote'][0])
     # 日期 時間 收市價 低點 高點 成交量 開市價
     df['date'] = date
 
-    return df[['high','date'] ]
+    # 去除空資料
+    non_null_data = df.dropna()
+
+    return non_null_data[['high','date'] ]
 
 def stamp_toDate(stamp):
     date=[]
@@ -41,8 +44,8 @@ def stamp_toDate(stamp):
         date.append(timeString)
     return date
 
-stock="2330.TW"
-crawl_price(stock).to_csv("data/temp.csv")
+stock="6547.TWO"
+crawl_price(stock).to_csv("data/MVC.csv")
 
 
 
