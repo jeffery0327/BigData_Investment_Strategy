@@ -10,9 +10,8 @@ import keras
 
 start=1970
 end=2020
-stock=["2330.TW","6547.TW","3081.TW","2610.TW","2618.TW","2609.TW","2615.TW","2603.TW"]
-stock_name=["TSMC","MVC","UBIP","CAL","EVAAIR","YMTC","WANHAI","EVA_Air"]
-datapath=["data/TSMC.csv","data/MVC.CSV","data/UBIP.CSV","data/CAL.CSV","data/EVAAIR.CSV","data/YMTC.CSV","data/WANHAI.CSV","data/EVA_Air.CSV"]
+stock=["2330.TW","6547.TWO","3081.TWO","2610.TW","2618.TW","2609.TW","2615.TW","2603.TW","2303.TW","2317.TW","5706.TW","2734.TWO","2731.TW","9943.TW","2002.TW","1216.TW","1203.TW","1210.TW","1215.TW","1217.TW","1227.TW"]
+stock_name=["TSMC","MVC","UBIP","CAL","EVAAIR","YMTC","WANHAI","EVA_Air","UMC","Hon_Hai","PHX_TOUR","Ezfly","Liontravel","HOLIDAY","SINOSTEEL","UNI_PRESIDENT","Ve_Wong","CHEMCHINA","CP","AGV","SFC"]
 
 
 def Cal_sec(start,end):
@@ -69,12 +68,16 @@ def stamp_toDate(stamp):
     return date
 
 def init():
-    df_toCSV(crawl_price(stock[0],start,end),datapath[0])
+    for i in range(0,len(stock)):
+        datapath = "data/"+stock_name[i]+".csv"
+        df_toCSV(crawl_price(stock[i],start,end),datapath)
 
-def LSTM(datapath):
+def LSTM(datapath_id):
     import pandas as pd
     import numpy as np
     import matplotlib.pyplot as plt
+
+    datapath = "data/"+stock_name[datapath_id]+".csv"
 
     data = pd.read_csv(datapath)
 
@@ -140,18 +143,20 @@ def LSTM(datapath):
     #使用sc的 inverse_transform將股價轉為歸一化前
     predicted_stock_price = sc.inverse_transform(predicted_stock_price)
 
-    plt.plot(test['high'].values, color = 'black', label = 'Real 2330TW Stock Price')
-    plt.plot(predicted_stock_price, color = 'green', label = 'Predicted 2330TW Stock Price')
+    plt.plot(test['high'].values, color = 'black', label = 'Real '+stock_name[datapath_id]+' Stock Price')
+    plt.plot(predicted_stock_price, color = 'green', label = 'Predicted '+stock_name[datapath_id]+' Stock Price')
     plt.title('TATA Stock Price Prediction')
     plt.xlabel('Time')
     plt.ylabel('Stock Price')
     plt.legend()
-    plt.show()
-    plt.savefig('data/chart/')
+    plt.savefig('data/chart/'+stock_name[datapath_id]+'.png')
+    plt.clf()
+    
 
 
 def run():
-    LSTM(datapath[0])
+    for i in range(0,len(stock_name)):
+        LSTM(i)
 
 init()
 run()
