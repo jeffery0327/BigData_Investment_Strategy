@@ -89,6 +89,7 @@ def LSTM(datapath_id):
 
     train_set = train['high']
     test_set = test['high']
+    data_set = data['high']
 
     from sklearn.preprocessing import MinMaxScaler 
     sc = MinMaxScaler(feature_range = (0, 1))
@@ -132,10 +133,10 @@ def LSTM(datapath_id):
     # inputs = dataset_total[len(dataset_total) - len(test) - 10:].values
 
 
-    inputs = test_set.values.reshape(-1,1)
+    inputs = data['high'].values.reshape(-1,1)
     inputs = sc.transform(inputs)
     X_test = []
-    for i in range(10, len(inputs)):
+    for i in range(train_len+1, len(inputs)):
         X_test.append(inputs[i-10:i-1, 0])
     X_test = np.array(X_test)
     X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1))
@@ -143,7 +144,7 @@ def LSTM(datapath_id):
     #使用sc的 inverse_transform將股價轉為歸一化前
     predicted_stock_price = sc.inverse_transform(predicted_stock_price)
 
-    plt.plot(test['high'].values, color = 'black', label = 'Real '+stock_name[datapath_id]+' Stock Price')
+    plt.plot(data_set.values, color = 'black', label = 'Real '+stock_name[datapath_id]+' Stock Price')
     plt.plot(predicted_stock_price, color = 'green', label = 'Predicted '+stock_name[datapath_id]+' Stock Price')
     plt.title('TATA Stock Price Prediction')
     plt.xlabel('Time')
